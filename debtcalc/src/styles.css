@@ -1,0 +1,6 @@
+.Payment-container {
+    display: flex;
+    flex-wrap: wrap;
+    border: 1px solid black;
+    flex-direction: column;
+}
