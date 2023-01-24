@@ -4,3 +4,18 @@
     border: 1px solid black;
     flex-direction: column;
 }
+
+.Top-container {
+    display: flex;
+    align-items: center;
+}
+
+.Debt-container, .Loan-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.Loan-container h1 {
+    font-size: 3rem;
+}
