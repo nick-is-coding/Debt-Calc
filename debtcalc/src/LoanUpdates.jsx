@@ -1,32 +1,15 @@
 import React from 'react';
+import DebtCalc from './DebtCalc';
 
 class LoanUpdates extends React.Component {
-    constructor() {
-        super();
-        this.state = { 
-            // principal: this.state.principal,
-            // interest: this.state.interest,
-            // loanAmount: this.state.loanAmount,
-        };
-    }
-
-
-
     render() {
-        const { principal } = this.props;
         return(
             <div>
                 <h1>Estimated Monthly Payments!</h1>
                     <ul>
-                        <li>Total Principal Paid</li>
-                        <span>
-                            {/* {principal.map((item) => (
-                                <span>{principal.paid}</span>
-                            ))} */}
-                        </span>
-                        <li>Total Interest Paid</li>
+                        <li>Remaining Payments</li>
                         <span></span>
-                        <li>Remaining Loan Amount</li>
+                        <li>Monthly Payments</li>
                         <span></span>
                     </ul>
             </div>

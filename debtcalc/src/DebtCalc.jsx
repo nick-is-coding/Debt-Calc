@@ -1,88 +1,96 @@
 import React from 'react';
-import LoanUpdates from './LoanUpdates';
-import MakePayment from './MakePayment';
-import styles from './styles.css';
+import './debtCalcStyles.css';
 
 class DebtCalc extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = { 
             loan: '',
             interest: '',
-            term: '',
             items: [],
+            amountOfPayments: '',
+            monthlyPayment: '',
         };
     }
 
-handleLoan = ({ target: {value}}) => this.setState({ loan: value });
-handleInterest = ({ target: {value}}) => this.setState({ interest: value });
-handleTerm = ({ target: {value}}) => this.setState({ term: value });
+handleLoan = ({ target: {value}} ) => this.setState({ loan: value });
+handleInterest = ({ target: {value}} ) => this.setState({ interest: value });
 
 handleSubmit = (e) => {
     e.preventDefault();
     const newItem = {
         loan: this.state.loan,
         interest: this.state.interest,
-        term: this.state.term,
     }
 
     this.setState((state) => ({
         items: [...state.items, newItem],
-        text: '',
+        loan: '',
+        interest: '',
     }));
+    this.calculateValue(newItem);
+    
+};
+
+calculateValue = (e) => {
+    // Monthly Payment = (Loan Amount * Interest Rate) / (1 - (1 + Interest Rate)^(-Loan Term (in months)))
+    let loanAmount = e.loan;
+    let interestRate = e.interest / 100;
+    let totalInterest = (interestRate / 12) * loanAmount;
+    let principalPayment = loanAmount * (1 / 100);
+    let monthlyPayment = (totalInterest + principalPayment).toFixed(2);
+    let amountOfPayments = loanAmount / principalPayment;
+    this.setState({monthlyPayment});
+    this.setState({amountOfPayments});
+
 }
 
 
-    render() {
-        return(
-            <div>
-                <div className='Top-container'>
-                    <div className='Debt-container'>
-                        <form onSubmit={this.handleSubmit}>
-                            <label>
-                                Loan Amount:
+render() {
+    return (
+            <div className='Debt-container'>
+                <form onSubmit={this.handleSubmit}>
+                    <div className='form-item'>
+                        <label> Loan Amount: </label>
+                            <div className='form-input'>
                                 <input 
                                     onChange={this.handleLoan}
-                                    type="text"
+                                    type="number"
                                     autoComplete="off"
-                                    value={this.state.text}
+                                    value={this.state.loan}
                                 />
-                            </label>
-                            <br />
-                            <label>
-                                Interest Rate:
+                            </div>
+                    </div>
+                    <br/>
+                    <div className='form-item'>
+                        <label> Interest Rate: </label>
+                            <div className='form-input'>
                                 <input
                                     onChange={this.handleInterest}
-                                    type="text"
+                                    type="number"
                                     autoComplete="off"
-                                    value={this.state.text}
+                                    value={this.state.interest}
                                 />
-                            </label>
-                            <br />
-                            <label>
-                                Desired Loan Term:
-                                <input
-                                    onChange={this.handleTerm}
-                                    type="text"
-                                    autoComplete="off"
-                                    value={this.state.text}
-                                />
-                            </label>
-                            <br />
-                            <button type="submit">Submit</button>
-                        </form>
-                        <br/>
+                            </div>
                     </div>
-                    <div className='Loan-container'>
-                        <LoanUpdates/>
+                    <br/>
+                    <div className='form-action'>
+                        <input 
+                            type="submit"
+                            value="calculate"
+                            className='calculate-button'
+                        />
                     </div>
+                </form>
+                <br/>
+                <div>
+                    <h3># of Payments:</h3>
+                    {this.state.amountOfPayments}
+                    <h3>Payment Amount:</h3>
+                    {this.state.amountOfPayments}
                 </div>
-                     <br/>
-                     <MakePayment/>
-            </div>
-        );
-    };
-}
+            </div>)
+        };  
+};
 
 export default DebtCalc;
-
